@@ -1,0 +1,97 @@
+<resources>
+
+    <style name="AppTheme" parent="Base.Theme">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="Base.Theme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionMenuTextAppearance">@style/MyActionMenuText</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:windowIsTranslucent">true</item>
+
+        <item name="Button.Primary">@style/Button.Primary</item>
+        <item name="Button.Primary.Stroke">@style/Button.Primary.Stroke</item>
+        <item name="whiteItemSelectBackground">@drawable/abc_item_background_white</item>
+        <item name="preferenceList">@style/PreferenceList.Background</item>
+        <item name="preferenceItemDivider">@style/PreferenceList.ItemDivider</item>
+        <item name="preferenceSingleTextItem">@style/PreferenceList.SingleTextItem</item>
+        <item name="horizontalList">@style/HorizontalList</item>
+    </style>
+
+    <style name="MyActionMenuText" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textSize">@dimen/font_16sp</item>
+    </style>
+
+    <style name="Theme.MainActivity" parent="AppTheme">
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="Base.Button" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/font_16sp</item>
+    </style>
+
+    <style name="Button.Primary" parent="@style/Base.Button">
+        <item name="android:background">@drawable/btn_fill_light</item>
+    </style>
+
+    <style name="Button.Primary.Stroke" parent="@style/Base.Button">
+        <item name="android:background">@drawable/btn_stroke_light</item>
+    </style>
+
+    <style name="SwipeBackLayout">
+        <item name="edge_size">50dip</item>
+        <item name="shadow_left">@mipmap/shadow_left</item>
+        <item name="shadow_right">@mipmap/shadow_right</item>
+        <item name="shadow_bottom">@mipmap/shadow_bottom</item>
+    </style>
+
+    <style name="PreferenceList" />
+
+    <style name="PreferenceList.Background" parent="PreferenceList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimen_48dp</item>
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">@dimen/dimen_16dp</item>
+        <item name="android:paddingRight">@dimen/dimen_16dp</item>
+    </style>
+
+    <style name="PreferenceList.ItemDivider" parent="PreferenceList">
+        <item name="android:background">@color/divider_line</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1.0px</item>
+    </style>
+
+    <style name="PreferenceList.SingleTextItem" parent="PreferenceList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/dimen_48dp</item>
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:paddingLeft">@dimen/dimen_16dp</item>
+        <item name="android:paddingRight">@dimen/dimen_16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">@dimen/font_16sp</item>
+    </style>
+
+    <style name="HorizontalList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimen_48dp</item>
+        <item name="android:background">?whiteItemSelectBackground</item>
+        <item name="android:paddingLeft">@dimen/dimen_16dp</item>
+        <item name="android:paddingRight">@dimen/dimen_16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/text_black</item>
+        <item name="android:textSize">@dimen/font_16sp</item>
+    </style>
+
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/ripple_material_light">
+    <item>
+        <selector>
+            <item android:drawable="@drawable/abc_list_selector_disabled_holo_light" android:state_enabled="false" android:state_focused="true" android:state_pressed="true" />
+            <item android:drawable="@drawable/abc_list_selector_disabled_holo_light" android:state_enabled="false" android:state_focused="true" />
+            <item android:drawable="@drawable/abc_list_selector_background_transition_holo_light" android:state_focused="true" android:state_pressed="true" />
+            <item android:drawable="@drawable/abc_list_selector_background_transition_holo_light" android:state_focused="false" android:state_pressed="true" />
+            <item android:drawable="@drawable/abc_list_focused_holo" android:state_focused="true" />
+            <item android:drawable="@android:color/white" />
+        </selector>
+    </item>
+</ripple>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:hint="@string/mobile"
+            android:phoneNumber="true"
+            app:met_clearButton="true"
+            app:met_iconLeft="@mipmap/ic_mobile"
+            app:met_iconPadding="0dp" />
+
+        <!--<com.rengwuxian.materialedittext.MaterialEditText-->
+        <!--android:id="@+id/et_password"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginRight="@dimen/dimen_16dp"-->
+        <!--android:layout_marginTop="@dimen/dimen_16dp"-->
+        <!--android:hint="密码"-->
+        <!--android:password="true"-->
+        <!--app:met_clearButton="true"-->
+        <!--app:met_iconLeft="@mipmap/ic_password"-->
+        <!--app:met_iconPadding="0dp" />-->
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_login"
+            style="?Button.Primary"
+            android:layout_margin="@dimen/dimen_16dp"
+            android:enabled="false"
+            android:text="@string/login" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_register"
+            style="?Button.Primary.Stroke"
+            android:layout_width="100dp"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="@dimen/dimen_48dp"
+            android:text="@string/register"
+            android:textColor="@color/text_black" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

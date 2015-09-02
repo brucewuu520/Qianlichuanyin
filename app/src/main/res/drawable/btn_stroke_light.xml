@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/btn_stroke_pressed_light" android:state_enabled="true" android:state_pressed="true" />
+    <item android:drawable="@drawable/btn_stroke_pressed_light" android:state_enabled="true" android:state_focused="true" />
+    <item android:drawable="@drawable/btn_stroke_pressed_light" android:state_activated="true" android:state_enabled="true" />
+    <item android:drawable="@drawable/btn_stroke_pressed_light" android:state_checked="true" android:state_enabled="true" />
+    <item android:drawable="@drawable/btn_stroke_normal_gray" android:state_enabled="false" />
+    <item android:drawable="@drawable/btn_stroke_normal_light" android:state_enabled="true" />
+</selector>

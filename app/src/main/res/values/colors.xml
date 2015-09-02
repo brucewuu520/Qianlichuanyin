@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base Theme colors-->
+    <color name="colorPrimary">#FFB300</color>
+    <color name="colorPrimaryDark">#EE9900</color>
+    <color name="colorAccent">#FFB300</color>
+    <color name="windowBackground">#FDFDFD</color>
+
+    <color name="main_gray">#9A9A9A</color>
+    <color name="color_gray">#a8a8a8</color>
+    <color name="color_gray_light">#FFDDDDDD</color>
+
+    <!-- Text Colors -->
+    <color name="text_white_translucent">#ddffffff</color>
+    <color name="text_black">#4f4f4f</color>
+    <color name="text_gray">#656565</color>
+    <color name="text_gray_light">#7a7a7a</color>
+
+    <!-- Swipe To Refresh Color -->
+    <color name="swipe_refresh">#e91e63</color>
+
+    <color name="divider_line">#dddddd</color>
+    <color name="card_background">#ff0000</color>
+    <color name="soft_white">#f0f0f0</color>
+    <color name="circle_border_color">#ffffff</color>
+    <color name="tip_line">#c9c9c9</color>
+
+</resources>

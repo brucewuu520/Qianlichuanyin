@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:hint="@string/mobile"
+            android:phoneNumber="true"
+            app:met_clearButton="true"
+            app:met_iconLeft="@mipmap/ic_mobile"
+            app:met_iconPadding="0dp" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/et_nickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:hint="@string/nickname"
+            app:met_clearButton="true"
+            app:met_iconLeft="@mipmap/ic_password"
+            app:met_iconPadding="0dp" />
+
+        <Button
+            android:id="@+id/btn_register_submit"
+            style="?Button.Primary"
+            android:layout_margin="@dimen/dimen_16dp"
+            android:text="@string/register" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>
