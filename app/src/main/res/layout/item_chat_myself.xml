@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_chat_face"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"/>
 
     <TextView
         android:id="@+id/tv_chat_messsage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/iv_chat_face"
         android:textColor="@color/text_black"
         android:textSize="@dimen/font_16sp"/>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_chat_face"
-        android:layout_width="56dp"
-        android:layout_height="56dp" />
-</LinearLayout>
+</RelativeLayout>
