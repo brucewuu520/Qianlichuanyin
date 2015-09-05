@@ -1,6 +1,7 @@
 package com.brucewuu.android.qlcy.base;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,19 +28,19 @@ public abstract class BaseFragment extends Fragment {
     public BaseFragment() {
         Object o = this;
         TAG = o.getClass().getSimpleName();
-        LogUtils.e("tag:" + TAG);
+        //LogUtils.e("tag:" + TAG);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        LogUtils.e(TAG + "---onAttach---");
+        //LogUtils.e(TAG + "---onAttach---");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.e(TAG + "---onCreate---");
+        //LogUtils.e(TAG + "---onCreate---");
     }
 
     @Nullable
@@ -54,26 +55,26 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LogUtils.e(TAG + "---onViewCreated---");
+        //LogUtils.e(TAG + "---onViewCreated---");
         afterViews();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LogUtils.e(TAG + "---onActivityCreated---");
+        //LogUtils.e(TAG + "---onActivityCreated---");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        LogUtils.e(TAG + "---onResume---");
+        //LogUtils.e(TAG + "---onResume---");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LogUtils.e(TAG + "---onPause---");
+        //LogUtils.e(TAG + "---onPause---");
     }
 
     @Override
@@ -97,6 +98,19 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        LogUtils.e(TAG + "---onDetach---");
+        //LogUtils.e(TAG + "---onDetach---");
+    }
+
+    protected void redirectTo(Class<?> cls) {
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), cls);
+        startActivity(intent);
+    }
+
+    protected void redirectTo(Class<?> cls, Bundle extras) {
+        Intent intent = new Intent();
+        intent.putExtras(extras);
+        intent.setClass(getActivity(), cls);
+        startActivity(intent);
     }
 }

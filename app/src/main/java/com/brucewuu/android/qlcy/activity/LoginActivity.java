@@ -78,8 +78,10 @@ public class LoginActivity extends BaseActivity {
             LogUtils.e("result:" + result);
             User user = User.parseJson(result);
             if (user != null && user.getResult().equals("0")) {
+                user.setId(user.getPhone());
                 PreferenceUtil.setUserInfo(user);
                 redirectTo(MainActivity.class);
+                finish();
             } else if (user != null && user.getResult().equals("-2")) {
                 UIHelper.showToast("手机号未注册~");
             } else {

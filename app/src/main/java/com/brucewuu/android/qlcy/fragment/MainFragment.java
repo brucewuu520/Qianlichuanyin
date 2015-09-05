@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.brucewuu.android.qlcy.AppContext;
 import com.brucewuu.android.qlcy.R;
 import com.brucewuu.android.qlcy.activity.ChatActivity;
 import com.brucewuu.android.qlcy.adapter.MessageAdapter;
@@ -46,6 +45,7 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
 
     @Override
     protected void afterViews() {
+        LogUtils.e("--mAdapter==" + mAdapter);
         Activity parentActivity = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parentActivity);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -54,9 +54,9 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(this);
 
-        IMManager.getInstance(AppContext.getInstance()).setConversationListener(this);
+        IMManager.getInstance(parentActivity).setConversationListener(this);
         emptyLayout.setEmptyClickListener(this);
-        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().register(this);
 
         loadData();
     }
@@ -70,8 +70,9 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
     @Override
     protected void initData(List<ConversationInfo> data) {
         emptyLayout.setEmptyView(EmptyLayout.DEFAULT);
+        LogUtils.e("initdata:" + ListUtils.getSize(data));
         if (ListUtils.isEmpty(data)) {
-
+            mAdapter.addHeaderView();
         } else {
             mAdapter.addAll(data);
         }
@@ -80,7 +81,7 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
     @Override
     protected void loadError() {
         if (mAdapter.isEmpty()) {
-            emptyLayout.setEmptyView(EmptyLayout.SERVER_ERROR);
+            emptyLayout.setEmptyView(EmptyLayout.LOAD_ERROR);
         } else {
             emptyLayout.setEmptyView(EmptyLayout.DEFAULT);
         }
@@ -88,31 +89,72 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
 
     @Override
     protected List<ConversationInfo> getData() throws Exception {
-        return IMManager.getInstance(AppContext.getInstance()).getConversationList();
+        return IMManager.getInstance(getActivity()).getConversationList();
     }
 
     @Override
     public void onCreateConversation(ConversationInfo conversationInfo) {
         LogUtils.e("onCreateConversation:" + conversationInfo);
+        if (conversationInfo != null) {
+            if (mAdapter.hasHeaderView())
+                mAdapter.removeHeaderView();
+            mAdapter.add(conversationInfo);
+        }
     }
 
     @Override
     public void onDeleteConversation(ConversationInfo conversationInfo) {
         LogUtils.e("onDeleteConversation:" + conversationInfo);
+        if (conversationInfo == null)
+            return;
+        if (conversationInfo == null)
+            return;
+        List<ConversationInfo> items = mAdapter.getAllItems();
+        for (ConversationInfo info : items) {
+            if (conversationInfo.getTargetId().equals(info.getTargetId())) {
+                mAdapter.remove(info);
+                break;
+            }
+        }
+        if (mAdapter.isEmpty()) {
+            mAdapter.addHeaderView();
+        }
     }
 
     @Override
     public void onUpdateConversation(ConversationInfo conversationInfo) {
-        LogUtils.e("onUpdateConversation:" + conversationInfo);
+        LogUtils.e("onUpdateConversation:" + "---madapter==" + mAdapter);
+        if (conversationInfo == null)
+            return;
+        List<ConversationInfo> items = mAdapter.getAllItems();
+        for (int i = 0, size = items.size(); i < size; i++) {
+            ConversationInfo info = items.get(i);
+            if (conversationInfo.getTargetId().equals(info.getTargetId())) {
+                LogUtils.e("indexof:" + i);
+                info.setMsgUnRead(conversationInfo.getMsgUnRead());
+                info.setConversationTitle(conversationInfo.getConversationTitle());
+                info.setDraftMsg(conversationInfo.getDraftMsg());
+                info.setLastTime(conversationInfo.getLastTime());
+                info.setTopTime(conversationInfo.getTopTime());
+                info.setIsTop(conversationInfo.getIsTop());
+                mAdapter.notifyItemChanged(i);
+                break;
+            }
+        }
     }
 
     @Override
     public void onClick(View v) {
-
+        loadData();
     }
 
     @Override
     public void onItemClick(View view, int position) {
+        ConversationInfo conversationInfo = mAdapter.getItem(position);
+        if (conversationInfo.getUnreadCount() > 0) {
+            conversationInfo.setMsgUnRead(0);
+            mAdapter.notifyItemChanged(position);
+        }
         Intent intent = new Intent(getActivity(), ChatActivity.class);
         intent.putExtra(ChatActivity.CONVERSATION, mAdapter.getItem(position));
         startActivity(intent);
@@ -128,6 +170,7 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
         LogUtils.e("--onEvent:" + event);
         if (event.equals(AppConfig.CONNECT_SUCCESS)) {
 
+            return;
         }
     }
 }

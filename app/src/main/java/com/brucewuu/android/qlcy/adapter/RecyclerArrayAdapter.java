@@ -218,7 +218,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
                 mObjects.addAll(index, collection);
             }
         }
-        notifyDataSetChanged();
+        notifyItemRangeInserted(index, collection.size());
     }
 
     /**
@@ -261,7 +261,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
                 mObjects.add(index, object);
             }
         }
-        notifyDataSetChanged();
+        notifyItemInserted(index);
     }
 
     /**
@@ -300,6 +300,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
      * @param object The object to remove.
      */
     public void remove(T object) {
+        final int position = indexOf(object);
         synchronized (mLock) {
             if (mOriginalValues != null) {
                 mOriginalValues.remove(object);
@@ -307,7 +308,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
                 mObjects.remove(object);
             }
         }
-        notifyDataSetChanged();
+        notifyItemRemoved(position);
     }
 
     /**
@@ -323,7 +324,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
                 mObjects.remove(index);
             }
         }
-        notifyDataSetChanged();
+        notifyItemRemoved(index);
     }
 
     /**
@@ -344,7 +345,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
                 mObjects.subList(start, end).clear();
             }
         }
-        notifyDataSetChanged();
+        notifyItemRangeRemoved(start, end);
     }
 
 

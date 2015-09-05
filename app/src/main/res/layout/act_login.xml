@@ -49,7 +49,7 @@
             android:id="@+id/btn_register"
             style="?Button.Primary.Stroke"
             android:layout_width="100dp"
-            android:layout_gravity="bottom"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/dimen_48dp"
             android:text="@string/register"
             android:textColor="@color/text_black" />

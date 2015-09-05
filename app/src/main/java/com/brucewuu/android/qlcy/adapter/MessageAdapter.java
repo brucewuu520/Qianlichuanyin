@@ -27,9 +27,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, RecyclerView.ViewHolder> {
 
-    private static final int VIEW_TYPE_HEADER = -111;
+    private static final int VIEW_TYPE_HEADER = -222;
     private Fragment mFragment;
     private WeakReference<OnItemClickListener> mOnItemClickListener;
+    private View header;
 
     public MessageAdapter(@NonNull Fragment fragment) {
         super(fragment.getActivity());
@@ -39,7 +40,7 @@ public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, Recyc
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_HEADER)
-            return new HeaderViewHolder(getInflater().inflate(R.layout.layout_no_message, parent, false));
+            return new HeaderViewHolder(header);
         return new MyViewHolder(getInflater().inflate(R.layout.item_message, parent, false));
     }
 
@@ -55,8 +56,10 @@ public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, Recyc
                 url = R.mipmap.converse_head5;
             } else if (conversationInfo.getCategoryId() == CategoryId.DISCUSSION) {
                 url = R.mipmap.converse_head6;
+            } else {
+                url = R.mipmap.defalut_face;
             }
-            Glide.with(mFragment).load(url).into(myViewHolder.ivFace);
+            Glide.with(mFragment).load(url).crossFade().centerCrop().into(myViewHolder.ivFace);
             myViewHolder.tvName.setText(conversationInfo.getConversationTitle());
             myViewHolder.tvLastMsg.setText(conversationInfo.getDraftMsg());
             if (conversationInfo.getMsgUnRead() > 0) {
@@ -70,7 +73,7 @@ public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, Recyc
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0 && isEmpty()) {
+        if (position == 0 && header != null) {
             return VIEW_TYPE_HEADER;
         }
         return super.getItemViewType(position);
@@ -78,37 +81,55 @@ public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, Recyc
 
     @Override
     public int getItemCount() {
-        if (isEmpty())
-            return 1;
+        if (header != null)
+            return super.getItemCount() + 1;
         return super.getItemCount();
     }
 
     @Override
     public long getItemId(int position) {
-        if (position == 0 && isEmpty())
+        if (position == 0 && header != null)
             return position;
         return super.getItemId(position);
     }
 
     @Override
     public ConversationInfo getItem(int position) {
+        if (header != null)
+            return super.getItem(position - 1);
         return super.getItem(position);
+    }
+
+    public void addHeaderView() {
+        if (this.header == null)
+            this.header = getInflater().inflate(R.layout.layout_no_message, null);
+    }
+
+    public void removeHeaderView() {
+        this.header = null;
+    }
+
+    public boolean hasHeaderView() {
+        return this.header != null;
     }
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
-        public HeaderViewHolder(final View itemView) {
+        public HeaderViewHolder(View itemView) {
             super(itemView);
+            final BadgeView badgeView = ButterKnife.findById(itemView, R.id.bv_msg_count);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     EventBus.getDefault().post(AppConfig.NO_MSG_TO_FRIENDS);
+                    if (badgeView.isShown())
+                        badgeView.hide();
                 }
             });
         }
     }
 
-    final class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @Bind(R.id.iv_msg_face)
         CircleImageView ivFace;
@@ -125,6 +146,7 @@ public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, Recyc
         public MyViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         @Override

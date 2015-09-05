@@ -5,6 +5,7 @@
         android:id="@+id/base_progress_wheel"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_gravity="center"
         wheel:matProg_barColor="?colorPrimary"
         wheel:matProg_fillRadius="true"
         wheel:matProg_progressIndeterminate="true" />
@@ -13,8 +14,13 @@
         android:id="@+id/base_tv_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:textColor="@color/text_gray_light"
         android:textSize="@dimen/font_16sp" />
+
+    <android.support.v4.widget.Space
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56dp"/>
 
 </merge>

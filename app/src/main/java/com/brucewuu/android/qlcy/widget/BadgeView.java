@@ -345,7 +345,6 @@ public class BadgeView extends TextView {
     }
 
     private void applyLayoutParams() {
-
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
                 LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
@@ -375,7 +374,6 @@ public class BadgeView extends TextView {
         }
 
         setLayoutParams(lp);
-
     }
 
     /**

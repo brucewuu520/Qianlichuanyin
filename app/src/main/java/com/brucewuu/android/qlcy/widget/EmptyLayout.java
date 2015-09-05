@@ -3,7 +3,6 @@ package com.brucewuu.android.qlcy.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +22,7 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
     public static final int ON_LOADING = 1;
     public static final int NO_DATA = 2;
     public static final int NET_ERROR = 3;
-    public static final int SERVER_ERROR = 4;
+    public static final int LOAD_ERROR = 4;
 
     private boolean clickEnable = false;
     private OnClickListener listener;
@@ -40,7 +39,7 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
         super(context, attrs);
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
-        LayoutInflater.from(context).inflate(R.layout.view_empty, this, true);
+        View.inflate(context, R.layout.view_empty, this);
         mProgressWheel = ButterKnife.findById(this, R.id.base_progress_wheel);
         tvEmpty = ButterKnife.findById(this, R.id.base_tv_empty);
         setOnClickListener(this);
@@ -90,7 +89,7 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
                 tvEmpty.setText(R.string.net_error);
                 clickEnable = true;
                 break;
-            case SERVER_ERROR:
+            case LOAD_ERROR:
                 this.setVisibility(VISIBLE);
                 mProgressWheel.setVisibility(GONE);
                 tvEmpty.setVisibility(VISIBLE);

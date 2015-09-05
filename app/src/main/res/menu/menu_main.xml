@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menu_add_group"
+        android:title="@string/add_group"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_create_group"
+        android:title="@string/create_group"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_create_discussion"
+        android:title="@string/create_discussion"
+        app:showAsAction="never" />
+</menu>

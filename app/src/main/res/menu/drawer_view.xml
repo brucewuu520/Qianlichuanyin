@@ -30,6 +30,10 @@
             android:icon="@mipmap/ic_forum"
             android:title="@string/group" />
         <item
+            android:id="@+id/nav_discussion"
+            android:icon="@mipmap/ic_forum"
+            android:title="@string/discussion" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@mipmap/ic_forum"
             android:title="@string/logout" />

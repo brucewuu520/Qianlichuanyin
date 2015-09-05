@@ -3,6 +3,7 @@ package com.brucewuu.android.qlcy.util;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -26,6 +27,17 @@ public final class UIHelper {
         Toast toast = Toast.makeText(AppContext.getInstance(), tip, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 30);
         toast.show();
+    }
+
+    public static void setRefreshing(final SwipeRefreshLayout mSwipeRefreshLayout, final boolean isRefresh) {
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(isRefresh);
+                }
+            }, 300L);
+        }
     }
 
     /**

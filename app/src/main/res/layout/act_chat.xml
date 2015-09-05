@@ -1,69 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.brucewuu.android.qlcy.widget.drawstatusbar.DrawStatusLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/main_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context=".activity.ChatActivity">
 
     <include layout="@layout/toolbar" />
 
     <RelativeLayout
+        android:id="@+id/rl_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@mipmap/message_bg3">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/chat_input_wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:background="@drawable/background_white"
             android:orientation="horizontal"
-            android:padding="@dimen/dimen_8dp">
+            android:paddingBottom="3dp"
+            android:paddingLeft="@dimen/dimen_8dp"
+            android:paddingRight="@dimen/dimen_8dp"
+            android:paddingTop="3dp">
 
             <ImageButton
                 android:id="@+id/ibtn_chat_volice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/selector_chat_volice" />
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:id="@+id/et_chat_message"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dimen_16dp"
-                android:layout_marginRight="@dimen/dimen_16dp"
-                android:minHeight="@dimen/dimen_48dp"
-                android:textCursorDrawable="@null"
-                app:met_clearButton="true" />
+                android:layout_centerVertical="true"
+                android:background="@drawable/record_up" />
 
             <FrameLayout
-                android:id="@+id/avoscloud_feedback_functional_wrap"
+                android:id="@+id/chat_functional_wrap"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
 
                 <ImageButton
                     android:id="@+id/btn_chat_more"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector_chat_more"
-                    android:src="@android:drawable/ic_menu_gallery" />
+                    android:background="@drawable/more_up" />
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_chat_send"
-                    style="?Button.Primary"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/btn_fill_light"
+                    android:text="@string/send"
+                    android:textColor="@android:color/white"
                     android:visibility="invisible" />
             </FrameLayout>
 
-        </LinearLayout>
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/et_chat_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dimen_16dp"
+                android:layout_marginRight="@dimen/dimen_16dp"
+                android:layout_toLeftOf="@id/chat_functional_wrap"
+                android:layout_toRightOf="@id/ibtn_chat_volice"
+                android:minHeight="@dimen/dimen_48dp"
+                android:textCursorDrawable="@null"
+                app:met_clearButton="true" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_chat_list"
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/chat_input_devider"
+            android:layout_width="match_parent"
+            android:layout_height="2.0px"
+            android:layout_above="@id/chat_input_wrapper"
+            android:background="@color/divider_line" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/mSwipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/chat_input_wrapper" />
+            android:layout_above="@id/chat_input_devider">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_chat_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</com.brucewuu.android.qlcy.widget.drawstatusbar.DrawStatusLinearLayout>

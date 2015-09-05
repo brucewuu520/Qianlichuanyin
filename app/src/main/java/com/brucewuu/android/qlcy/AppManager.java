@@ -110,7 +110,8 @@ public class AppManager {
     public void finishActivity(Class<?> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
-                finishActivity(activity);
+                activity.finish();
+                cls = null;
                 break;
             }
         }

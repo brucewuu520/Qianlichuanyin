@@ -50,6 +50,15 @@
 
         <activity
             android:name=".activity.ChatActivity"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <activity
+            android:name=".activity.CreateDiscussionActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.SettingActivity"
             android:launchMode="singleTask" />
 
 
@@ -57,8 +66,9 @@
         <service
             android:name="com.yzxtcp.service.YzxIMCoreService"
             android:exported="true" />
-        // AlarmReceiver和MsgBackReceiver是维持TCP长连接心跳的广播
+        //AlarmReceiver和MsgBackReceiver是维持TCP长连接心跳的广播
         <receiver android:name="com.yzxtcp.tools.tcp.receiver.AlarmReceiver" />
+        <receiver android:name="com.yzxtcp.tools.tcp.receiver.MsgBackReceiver" />
 
     </application>
 

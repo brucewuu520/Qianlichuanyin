@@ -3,10 +3,12 @@ package com.brucewuu.android.qlcy.model;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by brucewuu on 15/9/1.
  */
-public class User {
+public class User implements Serializable {
 
     @SerializedName("userid")
     private String id;

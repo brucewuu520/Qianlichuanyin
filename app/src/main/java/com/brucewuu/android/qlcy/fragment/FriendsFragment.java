@@ -1,6 +1,7 @@
 package com.brucewuu.android.qlcy.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.brucewuu.android.qlcy.R;
+import com.brucewuu.android.qlcy.activity.ChatActivity;
 import com.brucewuu.android.qlcy.adapter.FriendsAdapter;
 import com.brucewuu.android.qlcy.base.LoadDataFragment;
 import com.brucewuu.android.qlcy.config.AppConfig;
@@ -17,9 +19,12 @@ import com.brucewuu.android.qlcy.model.User;
 import com.brucewuu.android.qlcy.util.ListUtils;
 import com.brucewuu.android.qlcy.util.io.LogUtils;
 import com.brucewuu.android.qlcy.widget.EmptyLayout;
+import com.mcxiaoke.next.task.Failure;
 import com.mcxiaoke.next.task.Success;
 import com.mcxiaoke.next.task.TaskBuilder;
 import com.squareup.okhttp.FormEncodingBuilder;
+import com.yzxIM.data.CategoryId;
+import com.yzxIM.data.db.ConversationInfo;
 
 import org.brucewuu.http.AppClient;
 
@@ -53,12 +58,12 @@ public class FriendsFragment extends LoadDataFragment<User> implements OnItemCli
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parentActivity);
         mRecyclerView.setLayoutManager(linearLayoutManager);
         mRecyclerView.setHasFixedSize(true);
-        if (mAdapter == null) {
+        if (mAdapter != null && !mAdapter.isEmpty()) {
+            mRecyclerView.setAdapter(mAdapter);
+        } else {
             mAdapter = new FriendsAdapter(this);
             mRecyclerView.setAdapter(mAdapter);
             loadData();
-        } else {
-            mRecyclerView.setAdapter(mAdapter);
         }
         mAdapter.setOnItemClickListener(this);
     }
@@ -102,9 +107,11 @@ public class FriendsFragment extends LoadDataFragment<User> implements OnItemCli
                     User user = User.parseJson(responce);
                     LogUtils.e("user===" + responce);
                     if (user != null && !TextUtils.isEmpty(user.getImtoken())) {
+                        user.setId(user.getPhone());
                         friends.add(user);
                     }
                 }
+                DBDaoFactory.getFriendsDao().saveAll(friends);
                 return friends;
             }
         }).success(new Success<List<User>>() {
@@ -113,11 +120,24 @@ public class FriendsFragment extends LoadDataFragment<User> implements OnItemCli
                 emptyLayout.setEmptyView(EmptyLayout.DEFAULT);
                 mAdapter.addAll(results);
             }
+        }).failure(new Failure() {
+            @Override
+            public void onFailure(Throwable throwable, Bundle bundle) {
+                emptyLayout.setEmptyView(EmptyLayout.LOAD_ERROR);
+            }
         }).with(mCaller).start();
     }
 
     @Override
     public void onItemClick(View view, int position) {
+        User user = mAdapter.getItem(position);
+        ConversationInfo conversationInfo = new ConversationInfo();
+        conversationInfo.setTargetId(user.getId());
+        conversationInfo.setCategoryId(CategoryId.PERSONAL.ordinal());
+        conversationInfo.setConversationTitle(user.getNickname());
 
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+        intent.putExtra(ChatActivity.CONVERSATION, conversationInfo);
+        startActivity(intent);
     }
 }

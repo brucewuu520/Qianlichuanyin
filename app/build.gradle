@@ -23,12 +23,12 @@ android {
     }
 
     signingConfigs {
-        debug {
-            storeFile file("/Users/MINI-II/AndroidStudioProjects/debug.jks")
-            storePassword "125690"
-            keyAlias "test"
-            keyPassword "123456"
-        }
+//        debug {
+//            storeFile file("/Users/MINI-II/AndroidStudioProjects/debug.jks")
+//            storePassword "125690"
+//            keyAlias "test"
+//            keyPassword "123456"
+//        }
         release {
             storeFile file("/Users/MINI-II/AndroidStudioProjects/brucewuu.jks")
             storePassword KEYSTORE_PASSWORD
@@ -43,7 +43,7 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
             versionNameSuffix "-debug"
             minifyEnabled false
-            signingConfig signingConfigs.debug
+            //signingConfig signingConfigs.debug
         }
 
         release {

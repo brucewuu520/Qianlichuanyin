@@ -2,7 +2,6 @@ package org.brucewuu.http;
 
 import android.text.TextUtils;
 
-import com.squareup.okhttp.CacheControl;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
@@ -46,7 +45,7 @@ public class AppClient {
      * @return
      */
     public static String get(String url) throws IOException {
-        Request request = new Request.Builder().cacheControl(CacheControl.FORCE_CACHE).url(url).build();
+        Request request = new Request.Builder().url(url).build();
         Response response = client.newCall(request).execute();
         if (response.isSuccessful())
             return response.body().string();

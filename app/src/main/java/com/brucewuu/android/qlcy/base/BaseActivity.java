@@ -98,10 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    protected void redirectTo(Intent intent) {
-        startActivity(intent);
-    }
-
     protected void redirectTo(Class<?> cls) {
         Intent intent = new Intent();
         intent.setClass(this, cls);

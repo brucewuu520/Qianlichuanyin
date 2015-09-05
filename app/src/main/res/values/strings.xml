@@ -4,16 +4,25 @@
     <string name="home">我的消息</string>
     <string name="friends">我的好友</string>
     <string name="group">我的群组</string>
+    <string name="discussion">讨论组</string>
     <string name="logout">注销</string>
     <string name="app_source">应用源码</string>
     <string name="about_author">关于作者</string>
 
     <string name="login">登录</string>
     <string name="register">注册</string>
+    <string name="add_group">加入群组</string>
+    <string name="create_group">创建群组</string>
+    <string name="create_discussion">创建讨论组</string>
 
     <string name="mobile">手机号码</string>
     <string name="nickname">昵称</string>
 
+    <string name="send">发送</string>
+    <string name="confirm">确定</string>
+    <string name="cancle">取消</string>
+
+    <string name="exit_tips">再按一次退出应用</string>
     <string name="loading">正在加载...</string>
     <string name="no_data">没有数据,轻触试试~</string>
     <string name="load_error">加载错误,轻触重试~</string>

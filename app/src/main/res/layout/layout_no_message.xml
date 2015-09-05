@@ -22,11 +22,16 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/icon_default" />
 
-        <com.brucewuu.android.qlcy.widget.BadgeView
-            android:id="@+id/bv_msg_count"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1" />
+            android:layout_height="wrap_content">
+
+            <com.brucewuu.android.qlcy.widget.BadgeView
+                android:id="@+id/bv_msg_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
