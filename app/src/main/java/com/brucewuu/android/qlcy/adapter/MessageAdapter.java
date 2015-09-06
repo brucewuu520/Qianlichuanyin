@@ -122,6 +122,7 @@ public class MessageAdapter extends RecyclerArrayAdapter<ConversationInfo, Recyc
                 @Override
                 public void onClick(View v) {
                     EventBus.getDefault().post(AppConfig.NO_MSG_TO_FRIENDS);
+                    badgeView.setText("0");
                     if (badgeView.isShown())
                         badgeView.hide();
                 }

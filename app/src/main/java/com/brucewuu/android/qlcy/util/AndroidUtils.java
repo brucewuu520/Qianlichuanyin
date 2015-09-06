@@ -38,7 +38,7 @@ public final class AndroidUtils {
     /**
      * app SDCard文件根目录
      */
-    private static final String APP_DIR = "Boluome";
+    private static final String APP_DIR = "Qlcy";
     /**
      * app缓存目录
      */
@@ -46,7 +46,7 @@ public final class AndroidUtils {
     /**
      * 图片缓存目录
      */
-    private static final String INDIVIDUAL_DIR_NAME = "uil-images";
+    private static final String INDIVIDUAL_DIR_NAME = "images";
     /**
      * 用户图像存储目录
      */

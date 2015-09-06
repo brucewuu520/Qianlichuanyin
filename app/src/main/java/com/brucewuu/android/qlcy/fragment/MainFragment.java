@@ -45,7 +45,6 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
 
     @Override
     protected void afterViews() {
-        LogUtils.e("--mAdapter==" + mAdapter);
         Activity parentActivity = getActivity();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(parentActivity);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -70,7 +69,6 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
     @Override
     protected void initData(List<ConversationInfo> data) {
         emptyLayout.setEmptyView(EmptyLayout.DEFAULT);
-        LogUtils.e("initdata:" + ListUtils.getSize(data));
         if (ListUtils.isEmpty(data)) {
             mAdapter.addHeaderView();
         } else {
@@ -166,7 +164,7 @@ public class MainFragment extends LoadDataFragment<ConversationInfo> implements 
         super.onDestroyView();
     }
 
-    public void onEvent(String event) {
+    public void onEventMainThread(String event) {
         LogUtils.e("--onEvent:" + event);
         if (event.equals(AppConfig.CONNECT_SUCCESS)) {
 

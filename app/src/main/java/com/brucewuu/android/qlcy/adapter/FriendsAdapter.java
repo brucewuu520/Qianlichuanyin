@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brucewuu.android.qlcy.R;
+import com.brucewuu.android.qlcy.activity.MainActivity;
 import com.brucewuu.android.qlcy.config.AppConfig;
 import com.brucewuu.android.qlcy.db.DBDaoFactory;
 import com.brucewuu.android.qlcy.listener.OnItemClickListener;
@@ -85,14 +86,9 @@ public class FriendsAdapter extends RecyclerArrayAdapter<User, RecyclerView.View
 
     @Override
     public int getItemCount() {
+        if (isEmpty())
+            return 0;
         return super.getItemCount() + 1;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        if (position == 0)
-            return position;
-        return super.getItemId(position);
     }
 
     @Override
@@ -125,6 +121,9 @@ public class FriendsAdapter extends RecyclerArrayAdapter<User, RecyclerView.View
                                 if (TextUtils.isEmpty(userId)) {
                                     localEditText.setError("请输入联系人ID");
                                     return;
+                                }
+                                if (userId.equals(MainActivity.getUser().getId())) {
+                                    UIHelper.showToast("不能添加自己~");
                                 }
                                 boolean flag = false;
                                 for (User user : getAllItems()) {

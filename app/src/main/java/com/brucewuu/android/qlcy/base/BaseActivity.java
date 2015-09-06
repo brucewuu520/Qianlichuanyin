@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.brucewuu.android.qlcy.AppManager;
+import com.brucewuu.android.qlcy.widget.LProgressDialog;
 
 import butterknife.ButterKnife;
 
@@ -20,6 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract @LayoutRes int getLayoutId();
 
     protected abstract void afterViews();
+
+    protected LProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +92,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
         AppManager.getInstance().finishActivity(this);
     }
 
@@ -96,6 +99,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isFinishing())
             return;
         onBackPressed();
+    }
+
+    protected void showProgressDialog(String msg) {
+        if (this.mProgressDialog == null)
+            this.mProgressDialog = new LProgressDialog(this, msg, true);
+
+        if (!TextUtils.isEmpty(msg))
+            this.mProgressDialog.setMessage(msg);
+        this.mProgressDialog.show();
+    }
+
+    protected void dismissProgressDialog() {
+        if (this.mProgressDialog != null)
+            this.mProgressDialog.dismiss();
     }
 
     protected void redirectTo(Class<?> cls) {

@@ -55,6 +55,7 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.btn_login)
     void login() {
+        showProgressDialog("正在登录...");
         FormEncodingBuilder builder = new FormEncodingBuilder();
         builder.add("phone", etMobile.getText().toString());
         TaskQueue.getDefault().addSerially(getCallable(AppConfig.LOGIN_URL, builder), callback, this);
@@ -75,6 +76,7 @@ public class LoginActivity extends BaseActivity {
     final TaskCallback<String> callback = new SimpleTaskCallback<String>() {
         @Override
         public void onTaskSuccess(String result, Bundle extras) {
+            dismissProgressDialog();
             LogUtils.e("result:" + result);
             User user = User.parseJson(result);
             if (user != null && user.getResult().equals("0")) {
@@ -91,6 +93,7 @@ public class LoginActivity extends BaseActivity {
 
         @Override
         public void onTaskFailure(Throwable ex, Bundle extras) {
+            dismissProgressDialog();
             UIHelper.showToast("登录失败，请重试~");
         }
     };

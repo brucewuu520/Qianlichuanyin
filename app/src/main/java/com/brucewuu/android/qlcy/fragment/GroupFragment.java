@@ -195,7 +195,7 @@ public class GroupFragment extends LoadDataFragment<GroupInfo> implements View.O
         startActivity(intent);
     }
 
-    public void onEvent(String event) {
+    public void onEventMainThread(String event) {
         if (event.equals(AppConfig.ADD_GROUP_SUCCESS) ||
                 event.equals(AppConfig.EXIT_GROUP_SUCCESS)) {
             mAdapter.clear();

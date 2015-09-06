@@ -12,11 +12,12 @@ public final class AppConfig {
     public static final String CREATE_GROPU = "http://imas.ucpaas.com/user/createGroup.do";
     public static final String EXIT_GROUP ="http://imas.ucpaas.com/user/quitGroup.do";
 
-    public static final String CONNECT_SUCCESS = "connect_success";
-    public static final String NO_MSG_TO_FRIENDS = "to_friends";
-    public static final String NETWORK_CONNECTED = "network_connected";
-    public static final String ADD_GROUP_SUCCESS = "add_group_success";
-    public static final String EXIT_GROUP_SUCCESS = "exit_group_success";
+    public static final String CONNECT_SUCCESS = "c_s";
+    public static final String NO_MSG_TO_FRIENDS = "t_f";
+    public static final String NETWORK_CONNECTED = "n_c";
+    public static final String ADD_GROUP_SUCCESS = "a_g_s";
+    public static final String EXIT_GROUP_SUCCESS = "e_g_s";
+    public static final String CREATE_DISCUSSION_SUCCESS = "c_d_s";
 
     public static final String [] FRIENDS = new String[] {
             "15066658481", "13916903892", "18217301273", "15806409045",

@@ -74,18 +74,6 @@ public class SysIntentUtil {
     }
 
     /**
-     * 返回桌面
-     *
-     * @param context
-     */
-    public static void goTo(Context context, Class<?> cls) {
-        Intent intent = new Intent();
-        intent.setClass(context, cls);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    /**
      * 进入设置的管理app界面
      */
     public static void goSettingsManageApp(Context context) {

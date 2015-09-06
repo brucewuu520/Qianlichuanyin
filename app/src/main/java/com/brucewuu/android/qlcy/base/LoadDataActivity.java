@@ -14,8 +14,6 @@ import java.util.List;
  */
 public abstract class LoadDataActivity<T> extends SwipeBackActivity {
 
-    protected final Object mCaller = new Object();
-
     protected abstract void loadData();
 
     protected abstract void initData(List<T> data);
@@ -25,11 +23,11 @@ public abstract class LoadDataActivity<T> extends SwipeBackActivity {
     protected abstract List<T> getData() throws Exception;
 
     protected final void load() {
-        TaskQueue.getDefault().add(callable, callback, mCaller);
+        TaskQueue.getDefault().add(callable, callback, this);
     }
 
     protected final void loadSerially() {
-        TaskQueue.getDefault().addSerially(callable, callback, mCaller);
+        TaskQueue.getDefault().addSerially(callable, callback, this);
     }
 
     final TaskCallback<List<T>> callback = new SimpleTaskCallback<List<T>>() {
@@ -53,7 +51,7 @@ public abstract class LoadDataActivity<T> extends SwipeBackActivity {
 
     @Override
     protected void onDestroy() {
-        TaskQueue.getDefault().cancelAll(mCaller);
+        TaskQueue.getDefault().cancelAll(this);
         super.onDestroy();
     }
 }

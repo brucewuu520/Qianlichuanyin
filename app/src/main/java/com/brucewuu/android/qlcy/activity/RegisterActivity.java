@@ -53,6 +53,7 @@ public class RegisterActivity extends SwipeBackActivity {
 
     @OnClick(R.id.btn_register_submit)
     void register() {
+        showProgressDialog("正在注册，请稍后...");
         String mobile = etMobile.getText().toString();
         String nickname = etNickname.getText().toString();
         if (!StringUtils.isPhone(mobile)) {
@@ -72,6 +73,7 @@ public class RegisterActivity extends SwipeBackActivity {
     final TaskCallback<String> callback = new SimpleTaskCallback<String>() {
         @Override
         public void onTaskSuccess(String result, Bundle extras) {
+            dismissProgressDialog();
             LogUtils.e("result:" + result);
             User user = User.parseJson(result);
             if (user != null && user.getResult().equals("0")) {
@@ -88,6 +90,7 @@ public class RegisterActivity extends SwipeBackActivity {
 
         @Override
         public void onTaskFailure(Throwable ex, Bundle extras) {
+            dismissProgressDialog();
             UIHelper.showToast("注册失败，请重试~");
         }
     };

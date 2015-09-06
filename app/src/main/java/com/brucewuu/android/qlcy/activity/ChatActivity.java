@@ -1,9 +1,11 @@
 package com.brucewuu.android.qlcy.activity;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -92,14 +94,15 @@ public class ChatActivity extends LoadDataActivity<ChatMessage> implements Messa
 
     @Override
     protected void afterViews() {
-        LogUtils.e("--ChatListAdapter==" + mAdapter);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         conversationInfo = (ConversationInfo) getIntent().getSerializableExtra(CONVERSATION);
         user = MainActivity.getUser();
+        actionBar.setTitle(conversationInfo.getConversationTitle());
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(linearLayoutManager);
@@ -244,6 +247,7 @@ public class ChatActivity extends LoadDataActivity<ChatMessage> implements Messa
                 .setPositiveButton("退出", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        showProgressDialog("正在退出...");
                         TaskBuilder.create(new Callable<Boolean>() {
                             @Override
                             public Boolean call() throws Exception {
@@ -259,6 +263,7 @@ public class ChatActivity extends LoadDataActivity<ChatMessage> implements Messa
                         }).success(new Success<Boolean>() {
                             @Override
                             public void onSuccess(Boolean result, Bundle bundle) {
+                                dismissProgressDialog();
                                 if (result) {
                                     UIHelper.showToast("退出成功~");
                                     EventBus.getDefault().post(AppConfig.EXIT_GROUP_SUCCESS);
@@ -269,13 +274,17 @@ public class ChatActivity extends LoadDataActivity<ChatMessage> implements Messa
                         }).failure(new Failure() {
                             @Override
                             public void onFailure(Throwable throwable, Bundle bundle) {
+                                dismissProgressDialog();
                                 UIHelper.showToast("操作失败,请重试~");
                             }
-                        }).with(mCaller).start();
+                        }).with(this).start();
                     }
                 }).setNegativeButton(R.string.cancle, null).show();
-            } else {
-
+            } else if (conversationInfo.getCategoryId() == CategoryId.DISCUSSION) {
+                Intent intent = new Intent(this, DiscussionDetailActivity.class);
+                intent.putExtra(DiscussionDetailActivity.DISCUSSION_ID, conversationInfo.getTargetId());
+                intent.putExtra(DiscussionDetailActivity.USER_ID, user.getId());
+                startActivity(intent);
             }
             return true;
         }

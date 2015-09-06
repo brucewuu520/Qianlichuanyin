@@ -13,11 +13,14 @@ import com.brucewuu.android.qlcy.activity.ChatActivity;
 import com.brucewuu.android.qlcy.activity.CreateDiscussionActivity;
 import com.brucewuu.android.qlcy.adapter.DiscusssionAdapter;
 import com.brucewuu.android.qlcy.base.LoadDataFragment;
+import com.brucewuu.android.qlcy.config.AppConfig;
 import com.brucewuu.android.qlcy.listener.OnItemClickListener;
 import com.brucewuu.android.qlcy.util.ListUtils;
 import com.brucewuu.android.qlcy.util.UIHelper;
+import com.brucewuu.android.qlcy.util.io.LogUtils;
 import com.brucewuu.android.qlcy.widget.EmptyLayout;
 import com.yzxIM.IMManager;
+import com.yzxIM.data.CategoryId;
 import com.yzxIM.data.db.ConversationInfo;
 import com.yzxIM.data.db.DiscussionInfo;
 import com.yzxIM.listener.DiscussionGroupCallBack;
@@ -27,6 +30,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by 吴昭 on 2015-9-5.
@@ -64,6 +68,7 @@ public class DiscussionFragment extends LoadDataFragment<DiscussionInfo> impleme
         }
         mAdapter.setOnItemClickListener(this);
         IMManager.getInstance(parentActivity).setDiscussionGroup(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -95,17 +100,23 @@ public class DiscussionFragment extends LoadDataFragment<DiscussionInfo> impleme
     }
 
     @Override
-    public void onCreateDiscussion(UcsReason ucsReason, DiscussionInfo discussionInfo) {
-        UIHelper.showToast("--onCreateDiscussion");
-        if (ucsReason.getReason() == 0) { // 创建成功
-            if (discussionInfo != null) {
-                if (mAdapter.isEmpty()) {
-                    emptyLayout.setEmptyView(EmptyLayout.DEFAULT);
-                    btnCreateDiscussion.setVisibility(View.GONE);
+    public void onCreateDiscussion(final UcsReason ucsReason, final DiscussionInfo discussionInfo) {
+        LogUtils.e("---onCreateDiscussion--");
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                UIHelper.showToast("--onCreateDiscussion");
+                if (ucsReason.getReason() == 0) { // 创建成功
+                    if (discussionInfo != null) {
+                        if (mAdapter.isEmpty()) {
+                            emptyLayout.setEmptyView(EmptyLayout.DEFAULT);
+                            btnCreateDiscussion.setVisibility(View.GONE);
+                        }
+                        mAdapter.insert(discussionInfo, 0);
+                    }
                 }
-                mAdapter.insert(discussionInfo, 0);
             }
-        }
+        });
     }
 
     @Override
@@ -136,13 +147,28 @@ public class DiscussionFragment extends LoadDataFragment<DiscussionInfo> impleme
     @Override
     public void onItemClick(View view, int position) {
         DiscussionInfo discussionInfo = mAdapter.getItem(position);
+        LogUtils.e("dismember:" + discussionInfo.getDiscussionMembers());
         ConversationInfo conversationInfo = IMManager.getInstance(AppContext.getInstance()).getConversation(discussionInfo.getDiscussionId());
         if (conversationInfo == null) {
-            UIHelper.showToast("该讨论组已被解散~");
-            return;
+            conversationInfo = new ConversationInfo();
+            conversationInfo.setTargetId(discussionInfo.getDiscussionId());
+            conversationInfo.setCategoryId(CategoryId.DISCUSSION);
+            conversationInfo.setConversationTitle(discussionInfo.getDiscussionName());
         }
         Intent intent = new Intent(getActivity(), ChatActivity.class);
         intent.putExtra(ChatActivity.CONVERSATION, conversationInfo);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
+    }
+
+    public void onEventMainThread(String event) {
+        if (event.equals(AppConfig.CREATE_DISCUSSION_SUCCESS)) {
+            IMManager.getInstance(AppContext.getInstance()).setDiscussionGroup(DiscussionFragment.this);
+        }
     }
 }

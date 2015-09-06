@@ -44,6 +44,7 @@
                 android:id="@+id/tv_msg_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:textColor="@color/text_black"
                 android:textSize="@dimen/font_16sp" />
 
@@ -52,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:singleLine="true"
                 android:textColor="@color/text_gray_light"
                 android:textSize="@dimen/font_14sp" />
 

@@ -41,7 +41,12 @@
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/login"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="com.brucewuu.android.qlcy.LoginActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".activity.RegisterActivity"
@@ -50,11 +55,18 @@
 
         <activity
             android:name=".activity.ChatActivity"
-            android:launchMode="singleTask"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
         <activity
             android:name=".activity.CreateDiscussionActivity"
+            android:label="@string/create_discussion"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".activity.DiscussionDetailActivity"
+            android:label="@string/discussion_info"
             android:launchMode="singleTask" />
 
         <activity

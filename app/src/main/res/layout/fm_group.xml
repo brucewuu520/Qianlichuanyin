@@ -12,10 +12,11 @@
         android:id="@+id/btn_add_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/btn_fill_light"
+        android:layout_gravity="center"
+        android:background="@drawable/btn_stroke_light"
         android:text="@string/add_group"
-        android:textColor="@android:color/white"
-        android:visibility="invisible" />
+        android:textColor="?colorPrimary"
+        android:visibility="gone" />
 
     <include layout="@layout/layout_empty" />
 

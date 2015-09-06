@@ -13,6 +13,7 @@ import com.brucewuu.android.qlcy.AppContext;
 import com.brucewuu.android.qlcy.R;
 import com.brucewuu.android.qlcy.adapter.CreateDiscussionAdapter;
 import com.brucewuu.android.qlcy.base.LoadDataActivity;
+import com.brucewuu.android.qlcy.config.AppConfig;
 import com.brucewuu.android.qlcy.db.DBDaoFactory;
 import com.brucewuu.android.qlcy.listener.OnItemClickListener;
 import com.brucewuu.android.qlcy.model.User;
@@ -35,6 +36,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by 吴昭 on 2015-9-5.
@@ -138,12 +140,12 @@ public class CreateDiscussionActivity extends LoadDataActivity<User> implements 
             if (selectList.size() == 0) {
                 UIHelper.showToast("请至少选择一个好友~");
             } else {
+                showProgressDialog("正在创建，请稍后...");
                 TaskBuilder.create(new Callable<Boolean>() {
                     @Override
                     public Boolean call() throws Exception {
                         StringBuilder stringBuilder = new StringBuilder();
-                        stringBuilder.append(MainActivity.getUser().getNickname())
-                                .append(",");
+                        stringBuilder.append(MainActivity.getUser().getNickname()).append(",");
                         ArrayList<String> memberList = new ArrayList<>();
                         for (User user : selectList) {
                             stringBuilder.append(user.getNickname()).append(",");
@@ -167,9 +169,10 @@ public class CreateDiscussionActivity extends LoadDataActivity<User> implements 
                 }).failure(new Failure() {
                     @Override
                     public void onFailure(Throwable throwable, Bundle bundle) {
+                        dismissProgressDialog();
                         UIHelper.showToast("创建失败，请重试~");
                     }
-                }).with(mCaller).serial(true).start();
+                }).with(this).serial(true).start();
             }
             return true;
         }
@@ -183,21 +186,30 @@ public class CreateDiscussionActivity extends LoadDataActivity<User> implements 
     }
 
     @Override
-    public void onCreateDiscussion(UcsReason ucsReason, DiscussionInfo discussionInfo) {
-        UIHelper.showToast("当前创建的~");
-        if (ucsReason.getReason() == 0) { // 创建成功
-            ConversationInfo info = IMManager.getInstance(AppContext.getInstance()).getConversation(discussionInfo.getDiscussionId());
-            if (null != info) {
-                Intent intent = new Intent(this, ChatActivity.class);
-                intent.putExtra(ChatActivity.CONVERSATION, info);
-                startActivity(intent);
-                finish();
-            } else {
-                LogUtils.e("获得讨论组会话为空");
+    public void onCreateDiscussion(final UcsReason ucsReason, final DiscussionInfo discussionInfo) {
+        LogUtils.e("---onCreateDiscussion--" + ucsReason.getReason());
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dismissProgressDialog();
+                UIHelper.showToast("当前创建的~");
+                if (ucsReason.getReason() == 0) { // 创建成功
+                    LogUtils.e("dismember:" + discussionInfo.getDiscussionMembers());
+                    ConversationInfo info = IMManager.getInstance(AppContext.getInstance()).getConversation(discussionInfo.getDiscussionId());
+                    if (null != info) {
+                        EventBus.getDefault().post(AppConfig.CREATE_DISCUSSION_SUCCESS);
+                        Intent intent = new Intent(CreateDiscussionActivity.this, ChatActivity.class);
+                        intent.putExtra(ChatActivity.CONVERSATION, info);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        LogUtils.e("获得讨论组会话为空");
+                    }
+                } else {
+                    UIHelper.showToast("创建失败，请重试~");
+                }
             }
-        } else {
-            UIHelper.showToast("创建失败，请重试~");
-        }
+        });
     }
 
     @Override

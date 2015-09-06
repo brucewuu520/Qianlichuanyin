@@ -125,7 +125,7 @@ public class FriendsFragment extends LoadDataFragment<User> implements OnItemCli
             public void onFailure(Throwable throwable, Bundle bundle) {
                 emptyLayout.setEmptyView(EmptyLayout.LOAD_ERROR);
             }
-        }).with(mCaller).start();
+        }).with(this).start();
     }
 
     @Override

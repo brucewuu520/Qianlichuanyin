@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity {
     /**
      * Remember the position of the selected item.
      */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_view_position";
+    //private static final String STATE_SELECTED_POSITION = "selected_navigation_view_position";
     private int selectedId = R.id.nav_home;
 
     @Bind(R.id.toolbar)
@@ -114,8 +114,9 @@ public class MainActivity extends BaseActivity {
         LogUtils.e("user:" + user.getId() + user.getPortraituri());
 
         if (user == null) {
+            Intent intent = new Intent("com.brucewuu.android.qlcy.LoginActivity");
+            startActivity(intent);
             AppManager.getInstance().AppExit();
-            SysIntentUtil.goTo(AppContext.getInstance(), LoginActivity.class);
         } else {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new MainFragment()).commit();
             setupDrawerContent(mNavigationView);
@@ -129,21 +130,26 @@ public class MainActivity extends BaseActivity {
 
             UCSManager.connect(user.getImtoken(), new ILoginListener() {
                 @Override
-                public void onLogin(UcsReason reason) {
+                public void onLogin(final UcsReason reason) {
                     LogUtils.e("msg:" + reason.getMsg() + "--reason:" + reason.getReason());
-                    if (reason.getReason() == 0) { // 登入成功
-                        LogUtils.e("---登入成功---");
-                        tvTips.setVisibility(View.GONE);
-                        EventBus.getDefault().post(AppConfig.CONNECT_SUCCESS);
-                    } else if (NetworkUtils.isNotConnected(AppContext.getInstance())) {  // 登入失败
-                        tvTips.setVisibility(View.VISIBLE);
-                        tvTips.setText("网络连接不可用~");
-                        tvTips.setTag(-1);
-                    } else {
-                        tvTips.setVisibility(View.VISIBLE);
-                        tvTips.setText("连接失败,点击重试~");
-                        tvTips.setTag(-2);
-                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (reason.getReason() == 0) { // 登入成功
+                                LogUtils.e("---登入成功---");
+                                tvTips.setVisibility(View.GONE);
+                                EventBus.getDefault().post(AppConfig.CONNECT_SUCCESS);
+                            } else if (NetworkUtils.isNotConnected(AppContext.getInstance())) {  // 登入失败
+                                tvTips.setVisibility(View.VISIBLE);
+                                tvTips.setText("网络连接不可用~");
+                                tvTips.setTag(-1);
+                            } else {
+                                tvTips.setVisibility(View.VISIBLE);
+                                tvTips.setText("连接失败,点击重试~");
+                                tvTips.setTag(-2);
+                            }
+                        }
+                    });
                 }
             });
         }
@@ -225,7 +231,7 @@ public class MainActivity extends BaseActivity {
                                 public void onFailure(Throwable throwable, Bundle bundle) {
                                     UIHelper.showToast("添加群组失败，请重试~");
                                 }
-                            }).with(MainActivity.class).serial(true).start();
+                            }).with(this).serial(true).start();
                         }
                     })
                     .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
@@ -247,7 +253,7 @@ public class MainActivity extends BaseActivity {
             final MaterialEditText localEditText = (MaterialEditText) localView.findViewById(R.id.et_group);
             localEditText.setHint("输入群组名称");
             this.createGroupDialog = new AlertDialog.Builder(this)
-                    .setTitle(R.string.add_group)
+                    .setTitle(R.string.create_group)
                     .setView(localView)
                     .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
@@ -287,15 +293,10 @@ public class MainActivity extends BaseActivity {
                                 public void onFailure(Throwable throwable, Bundle bundle) {
                                     UIHelper.showToast("创建群组失败，请重试~");
                                 }
-                            }).with(MainActivity.class).start();
+                            }).with(this).start();
                         }
                     })
-                    .setNegativeButton(R.string.cancle, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    }).create();
+                    .setNegativeButton(R.string.cancle, null).create();
         }
         createGroupDialog.show();
     }
@@ -337,8 +338,9 @@ public class MainActivity extends BaseActivity {
                 UCSManager.disconnect(); // 注销函数
                 PreferenceUtil.clear();
                 DBDaoFactory.getFriendsDao().deleteAll();
+                Intent intent = new Intent("com.brucewuu.android.qlcy.LoginActivity");
+                startActivity(intent);
                 AppManager.getInstance().AppExit();
-                SysIntentUtil.goTo(AppContext.getInstance(), LoginActivity.class);
                 break;
             case R.id.nav_app_source:
                 break;
@@ -362,21 +364,26 @@ public class MainActivity extends BaseActivity {
         else {
             UCSManager.connect(user.getImtoken(), new ILoginListener() {
                 @Override
-                public void onLogin(UcsReason reason) {
+                public void onLogin(final UcsReason reason) {
                     LogUtils.e("msg:" + reason.getMsg() + "--reason:" + reason.getReason());
-                    if (reason.getReason() == 0) { // 登入成功
-                        LogUtils.e("---登入成功---");
-                        tvTips.setVisibility(View.GONE);
-                        EventBus.getDefault().post(AppConfig.CONNECT_SUCCESS);
-                    } else if (NetworkUtils.isNotConnected(AppContext.getInstance())) {  // 登入失败
-                        tvTips.setVisibility(View.VISIBLE);
-                        tvTips.setText("网络连接不可用~");
-                        tvTips.setTag(-1);
-                    } else {
-                        tvTips.setVisibility(View.VISIBLE);
-                        tvTips.setText("连接失败,点击重试~");
-                        tvTips.setTag(-2);
-                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (reason.getReason() == 0) { // 登入成功
+                                LogUtils.e("---登入成功---");
+                                tvTips.setVisibility(View.GONE);
+                                EventBus.getDefault().post(AppConfig.CONNECT_SUCCESS);
+                            } else if (NetworkUtils.isNotConnected(AppContext.getInstance())) {  // 登入失败
+                                tvTips.setVisibility(View.VISIBLE);
+                                tvTips.setText("网络连接不可用~");
+                                tvTips.setTag(-1);
+                            } else {
+                                tvTips.setVisibility(View.VISIBLE);
+                                tvTips.setText("连接失败,点击重试~");
+                                tvTips.setTag(-2);
+                            }
+                        }
+                    });
                 }
             });
         }
@@ -410,7 +417,7 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    public void onEvent(String event) {
+    public void onEventMainThread(String event) {
         if (event.equals(AppConfig.NO_MSG_TO_FRIENDS)) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new FriendsFragment()).commit();
             mNavigationView.getMenu().findItem(R.id.nav_friends).setChecked(true);
