@@ -68,7 +68,7 @@ public final class AndroidUtils {
     }
 
     /**
-     * 创建（获取）图片缓存目录../cache/uil-images
+     * 创建（获取）图片缓存目录../cache/images
      *
      * @param context
      * @return
@@ -227,11 +227,14 @@ public final class AndroidUtils {
      * @param editText
      */
     public static void hideSoftKeyboard(Context context, EditText editText) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(
-                Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
+    public static void showSoftKeyboard(Context context, EditText editText) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
+    }
 
     /**
      * Checks whether the recording service is currently running.

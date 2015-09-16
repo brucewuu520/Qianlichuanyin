@@ -27,7 +27,6 @@ import com.brucewuu.android.qlcy.AppManager;
 import com.brucewuu.android.qlcy.R;
 import com.brucewuu.android.qlcy.base.BaseActivity;
 import com.brucewuu.android.qlcy.config.AppConfig;
-import com.brucewuu.android.qlcy.db.DBDaoFactory;
 import com.brucewuu.android.qlcy.fragment.DiscussionFragment;
 import com.brucewuu.android.qlcy.fragment.FriendsFragment;
 import com.brucewuu.android.qlcy.fragment.GroupFragment;
@@ -270,9 +269,9 @@ public class MainActivity extends BaseActivity {
                                     builder.add("userId", user.getId());
                                     builder.add("groupName", groupName);
                                     final String response = AppClient.post(AppConfig.CREATE_GROPU, builder);
+                                    LogUtils.e("创建群组：" + response);
                                     JSONObject json = new JSONObject(response);
                                     if (json.has("result") && json.getString("result").equals("0")) {
-
                                         return true;
                                     }
 
@@ -335,18 +334,20 @@ public class MainActivity extends BaseActivity {
                 transaction.replace(R.id.main_container, new DiscussionFragment());
                 break;
             case R.id.nav_logout:
-                UCSManager.disconnect(); // 注销函数
-                PreferenceUtil.clear();
-                DBDaoFactory.getFriendsDao().deleteAll();
-                Intent intent = new Intent("com.brucewuu.android.qlcy.LoginActivity");
+                Intent intent = new Intent(this, MessageActivity.class);
                 startActivity(intent);
-                AppManager.getInstance().AppExit();
+//                UCSManager.disconnect(); // 注销函数
+//                PreferenceUtil.clear();
+//                DBDaoFactory.getFriendsDao().deleteAll();
+//                Intent intent = new Intent("com.brucewuu.android.qlcy.LoginActivity");
+//                startActivity(intent);
+//                AppManager.getInstance().AppExit();
                 break;
-            case R.id.nav_app_source:
-                break;
-            case R.id.nav_about_author:
-                redirectTo(SettingActivity.class);
-                break;
+//            case R.id.nav_app_source:
+//                break;
+//            case R.id.nav_about_author:
+//                redirectTo(SettingActivity.class);
+//                break;
             default:
                 transaction.replace(R.id.main_container, new MainFragment());
                 break;

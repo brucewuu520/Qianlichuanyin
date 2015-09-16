@@ -133,11 +133,6 @@ public class AppManager {
      * 退出应用程序
      */
     public void AppExit() {
-        try {
-            finishAllActivity();
-            Runtime.getRuntime().exit(0);
-        } catch (Exception e) {
-            Runtime.getRuntime().exit(-1);
-        }
+        finishAllActivity();
     }
 }

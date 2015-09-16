@@ -85,11 +85,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         AppManager.getInstance().finishActivity(this);

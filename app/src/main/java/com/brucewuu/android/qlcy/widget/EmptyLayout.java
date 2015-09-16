@@ -49,7 +49,7 @@ public class EmptyLayout extends LinearLayout implements View.OnClickListener {
     public void onClick(View v) {
         if (clickEnable) {
             if (currentState == NET_ERROR) {
-                SysIntentUtil.gotoNetworkSetting(getContext());
+                SysIntentUtil.goSettings(getContext());
             } else if (listener != null) {
                 listener.onClick(v);
             }

@@ -16,7 +16,6 @@ import com.brucewuu.android.qlcy.base.LoadDataFragment;
 import com.brucewuu.android.qlcy.config.AppConfig;
 import com.brucewuu.android.qlcy.listener.OnItemClickListener;
 import com.brucewuu.android.qlcy.util.ListUtils;
-import com.brucewuu.android.qlcy.util.UIHelper;
 import com.brucewuu.android.qlcy.util.io.LogUtils;
 import com.brucewuu.android.qlcy.widget.EmptyLayout;
 import com.yzxIM.IMManager;
@@ -105,7 +104,6 @@ public class DiscussionFragment extends LoadDataFragment<DiscussionInfo> impleme
         mRecyclerView.post(new Runnable() {
             @Override
             public void run() {
-                UIHelper.showToast("--onCreateDiscussion");
                 if (ucsReason.getReason() == 0) { // 创建成功
                     if (discussionInfo != null) {
                         if (mAdapter.isEmpty()) {

@@ -4,21 +4,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brucewuu.android.qlcy.AppContext;
 import com.brucewuu.android.qlcy.AppManager;
 import com.brucewuu.android.qlcy.R;
-import com.brucewuu.android.qlcy.adapter.RecyclerArrayAdapter;
 import com.brucewuu.android.qlcy.base.SwipeBackActivity;
+import com.brucewuu.android.qlcy.util.ListUtils;
 import com.brucewuu.android.qlcy.util.UIHelper;
 import com.brucewuu.android.qlcy.util.io.LogUtils;
+import com.brucewuu.android.qlcy.widget.ScrollGridView;
 import com.mcxiaoke.next.task.Failure;
 import com.mcxiaoke.next.task.SimpleTaskCallback;
 import com.mcxiaoke.next.task.Success;
@@ -37,7 +39,7 @@ import java.util.concurrent.Callable;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import de.hdodenhof.circleimageview.CircleImageView;
+import butterknife.OnItemClick;
 
 /**
  * Created by brucewuu on 15/9/6.
@@ -50,8 +52,8 @@ public class DiscussionDetailActivity extends SwipeBackActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.rv_discussion_member)
-    RecyclerView mRecyclerView;
+    @Bind(R.id.gv_discussion_member)
+    ScrollGridView mGridView;
 
     @Bind(R.id.tv_discussion_name)
     TextView tvName;
@@ -79,11 +81,6 @@ public class DiscussionDetailActivity extends SwipeBackActivity {
 
         discussionId = getIntent().getStringExtra(DISCUSSION_ID);
         userId = getIntent().getStringExtra(USER_ID);
-
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
-        mRecyclerView.setHasFixedSize(false);
-        mAdapter = new DiscussionMemberAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
 
         TaskQueue.getDefault().add(getCallable(), callback, this);
     }
@@ -182,7 +179,8 @@ public class DiscussionDetailActivity extends SwipeBackActivity {
         @Override
         public void onTaskSuccess(List<String> results, Bundle extras) {
             LogUtils.e("results:" + results.size());
-            mAdapter.addAll(results);
+            mAdapter = new DiscussionMemberAdapter(DiscussionDetailActivity.this, results);
+            mGridView.setAdapter(mAdapter);
             tvName.setText(discussionInfo.getDiscussionName());
         }
 
@@ -227,23 +225,70 @@ public class DiscussionDetailActivity extends SwipeBackActivity {
         super.onDestroy();
     }
 
-    class DiscussionMemberAdapter extends RecyclerArrayAdapter<String, DiscussionMemberAdapter.MyViewHolder> {
+    @OnItemClick(R.id.gv_discussion_member)
+    void onItemClick(final int position) {
+        final String member = mAdapter.getItem(position);
+        if (member.equals("+")) {
 
+        } else if (member.equals("-")) {
+            if (mAdapter.isDeleting()) {
+                mAdapter.setDeleting(false);
+            } else {
+                mAdapter.setDeleting(true);
+            }
+            mAdapter.notifyDataSetChanged();
+        } else if (mAdapter.isDeleting()) {
+            showProgressDialog("正在删除...");
+            TaskBuilder.create(new Callable<Boolean>() {
+                @Override
+                public Boolean call() throws Exception {
+                    List<String> list = new ArrayList<>();
+                    list.add(member);
+                    return IMManager.getInstance(AppContext.getInstance())
+                            .delDiscussionGroupMember(discussionId, list);
+                }
+            }).success(new Success<Boolean>() {
+                @Override
+                public void onSuccess(Boolean bool, Bundle bundle) {
+                    dismissProgressDialog();
+                    if (bool) {
+                        mAdapter.removeAt(position);
+                    }
+                }
+            }).failure(new Failure() {
+                @Override
+                public void onFailure(Throwable throwable, Bundle bundle) {
+                    dismissProgressDialog();
+                    UIHelper.showToast("删除失败，请重试~");
+                }
+            }).with(DiscussionDetailActivity.this).start();
+        } else {
+
+        }
+    }
+
+    static class DiscussionMemberAdapter extends BaseAdapter {
+
+        private List<String> items;
         private boolean deleting = false;
+        private Context mContext;
 
-        public DiscussionMemberAdapter(Context context) {
-            super(context);
+        public DiscussionMemberAdapter(Context mContext, List<String> items) {
+            this.mContext = mContext;
+            this.items = items;
         }
 
         @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            LogUtils.e("---onCreateViewHolder--:" + viewType);
-            return new MyViewHolder(getInflater().inflate(R.layout.item_discussion_member, parent, false));
-        }
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = LayoutInflater.from(mContext).inflate(R.layout.item_discussion_member, parent, false);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
 
-        @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-            LogUtils.e("---onBindViewHolder--:" + position);
             String member = getItem(position);
             if (member.equals("+")) {
                 holder.ivFace.setImageResource(R.drawable.add_member);
@@ -262,41 +307,50 @@ public class DiscussionDetailActivity extends SwipeBackActivity {
                 holder.tvName.setVisibility(View.VISIBLE);
                 holder.flag.setVisibility(View.GONE);
             }
+
+            return convertView;
+        }
+
+        @Override
+        public int getCount() {
+            return ListUtils.getSize(items);
+        }
+
+        @Override
+        public String getItem(int position) {
+            return items.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public boolean isDeleting() {
+            return this.deleting;
         }
 
         public void setDeleting(boolean isDeleting) {
             this.deleting = isDeleting;
         }
 
-        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public void removeAt(int position) {
+            items.remove(position);
+        }
+
+        class ViewHolder {
 
             @Bind(R.id.iv_member_face)
-            CircleImageView ivFace;
+            ImageView ivFace;
 
             @Bind(R.id.view_delete_flag)
-            View flag;
+            ImageView flag;
 
             @Bind(R.id.tv_member_name)
             TextView tvName;
 
-            public MyViewHolder(View itemView) {
-                super(itemView);
+            public ViewHolder(View itemView) {
                 ButterKnife.bind(this, itemView);
-                itemView.setOnClickListener(this);
-            }
-
-            @Override
-            public void onClick(View v) {
-                String member = getItem(getAdapterPosition());
-                if (member.equals("+")) {
-
-                } else if (member.equals("-")) {
-
-                } else if (deleting) {
-
-                } else {
-
-                }
             }
         }
     }

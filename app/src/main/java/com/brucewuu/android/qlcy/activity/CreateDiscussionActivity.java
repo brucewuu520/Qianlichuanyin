@@ -187,7 +187,6 @@ public class CreateDiscussionActivity extends LoadDataActivity<User> implements 
 
     @Override
     public void onCreateDiscussion(final UcsReason ucsReason, final DiscussionInfo discussionInfo) {
-        LogUtils.e("---onCreateDiscussion--" + ucsReason.getReason());
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

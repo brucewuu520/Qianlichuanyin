@@ -118,7 +118,7 @@ public abstract class RecyclerArrayAdapter<T, VH extends RecyclerView.ViewHolder
      * @param object The object to add at the end of the array.
      */
     public void add(T object) {
-        final int position = getItemCount();
+        final int position = getCount();
         synchronized (mLock) {
             if (mOriginalValues != null) {
                 mOriginalValues.add(object);

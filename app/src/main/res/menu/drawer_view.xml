@@ -33,22 +33,18 @@
             android:id="@+id/nav_discussion"
             android:icon="@mipmap/ic_forum"
             android:title="@string/discussion" />
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@mipmap/ic_forum"
-            android:title="@string/logout" />
     </group>
 
     <item android:title="Other">
         <menu>
             <item
-                android:id="@+id/nav_app_source"
-                android:icon="@mipmap/ic_github"
-                android:title="@string/app_source" />
-            <item
-                android:id="@+id/nav_about_author"
+                android:id="@+id/nav_logout"
                 android:icon="@mipmap/ic_forum"
-                android:title="@string/about_author" />
+                android:title="@string/logout" />
+            <!--<item-->
+                <!--android:id="@+id/nav_about_author"-->
+                <!--android:icon="@mipmap/ic_forum"-->
+                <!--android:title="@string/about_author" />-->
         </menu>
     </item>
 

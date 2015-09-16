@@ -8,7 +8,7 @@ import java.util.TimeZone;
 
 public class DateUtil {
 
-    private final static ThreadLocal<SimpleDateFormat> dateFormater = new ThreadLocal<SimpleDateFormat>() {
+    private static final ThreadLocal<SimpleDateFormat> dateFormater = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,6 +82,12 @@ public class DateUtil {
             return true;
         }
         return false;
+    }
+
+    public static String friendlyDate(long time) {
+        Date date = new Date(time);
+        String timeStr = ParseDateToString(date);
+        return timeStr.substring(5, 18);
     }
 
 }

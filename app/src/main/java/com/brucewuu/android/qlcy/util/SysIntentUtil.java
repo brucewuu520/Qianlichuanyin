@@ -87,6 +87,7 @@ public class SysIntentUtil {
      */
     public static void goSettings(Context context) {
         Intent intent = new Intent(Settings.ACTION_SETTINGS);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
@@ -96,9 +97,8 @@ public class SysIntentUtil {
      * @param context
      */
     public static void gotoNetworkSetting(Context context) {
-        Intent intent = new Intent();
-        // 类名一定要包含包名
-        intent.setClassName("com.android.settings", "com.android.settings.WirelessSettings");
+        Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
